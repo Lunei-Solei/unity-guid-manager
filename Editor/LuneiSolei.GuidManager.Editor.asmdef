@@ -1,0 +1,16 @@
+{
+    "name": "LuneiSolei.GuidManager.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f7b9c131547d1a64f864bcff55066989"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

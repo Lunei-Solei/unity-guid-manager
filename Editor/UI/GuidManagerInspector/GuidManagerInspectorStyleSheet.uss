@@ -1,0 +1,26 @@
+.pagination-button {
+    padding-left: 2px;
+    padding-right: 2px;
+    width: 20px;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+}
+
+#gameObjectGroupBox {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#paginationToolbar {
+    align-items: stretch;
+    justify-content: center;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-radius: 3px;
+}

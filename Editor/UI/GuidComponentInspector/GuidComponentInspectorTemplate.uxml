@@ -1,0 +1,12 @@
+<engine:UXML xmlns:engine="UnityEngine.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+             editor-extension-mode="True">
+    <UnityEditor.UIElements.ObjectField label="GUID Manager Object"
+                                        type="GuidManagerComponent, LuneiSolei.GuidManagerComponent"
+                                        binding-path="guidManagerInstance"/>
+    <engine:VisualElement style="flex-grow: 1;">
+        <engine:GroupBox name="guidReferenceGroupBox" style="flex-direction: row; justify-content: space-between;">
+            <engine:Label text="GUID" name="guidLabel"/>
+            <engine:Label name="guidField" binding-path="serializedGuid"/>
+        </engine:GroupBox>
+    </engine:VisualElement>
+</engine:UXML>

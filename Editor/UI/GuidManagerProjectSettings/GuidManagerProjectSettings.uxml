@@ -1,0 +1,7 @@
+<engine:UXML xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True" stylesheet="Packages/com.luneisolei.guidmanager/Editor/GuidManagerProjectSettings/GuidManagerProjectSettings.uss">
+    <Style src="project://database/Packages/com.luneisolei.guidmanager/Editor/UI/GuidManagerProjectSettings/GuidManagerProjectSettings.uss?fileID=7433441132597879392&amp;guid=6454dec1f6fa93941b0213152c0b7b20&amp;type=3#GuidManagerProjectSettings" />
+    <engine:VisualElement style="flex-grow: 1;">
+        <editor:ObjectField label="Manager Scene Asset" allow-scene-objects="false" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" />
+        <editor:ObjectField name="guidManagerField" label="Guid Manager Object" />
+    </engine:VisualElement>
+</engine:UXML>

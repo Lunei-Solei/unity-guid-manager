@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/LuneiSolei/Tools/GUID/Editor/GuidManagerInspector/GuidManagerInspectorStyleSheet.uss?fileID=7433441132597879392&amp;guid=8eefe0001456d8e469e0a383605c37d0&amp;type=3#GuidManagerInspectorStyleSheet" />
+    <engine:VisualElement style="flex-grow: 1;">
+        <engine:Button text="Revalidate GUIDs" name="revalidateButton" />
+        <engine:Button text="Regenerate GUIDs" name="regenerateButton" />
+    </engine:VisualElement>
+</engine:UXML>
