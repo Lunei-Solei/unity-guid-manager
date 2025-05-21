@@ -42,10 +42,10 @@ public class Config : ScriptableObject
 #if UNITY_EDITOR
     public SceneAsset GetManagersSceneAsset()
     {
-        Guid.TryParse(managersSceneGuid.ToString(), out Guid systemGuid);
-        if (systemGuid == Guid.Empty) return null;
+        Guid.TryParse(managersSceneGuid.ToString(), out Guid guid);
+        if (guid == Guid.Empty) return null;
 
-        string scenePath = AssetDatabase.GUIDToAssetPath(systemGuid.ToString());
+        string scenePath = AssetDatabase.GUIDToAssetPath(guid.ToString());
         SceneAsset managersSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
 
         return managersSceneAsset;

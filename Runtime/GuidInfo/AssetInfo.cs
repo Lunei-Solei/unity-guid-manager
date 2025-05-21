@@ -6,7 +6,7 @@ namespace GuidInfo
 {
     public class AssetInfo : IGuidInfo
     {
-        public Guid SystemGuid {get; set;}
+        public Guid Guid {get; set;}
         public GameObject GameObject {get;}
         public MonoBehaviour Component {get;}
 
@@ -16,14 +16,14 @@ namespace GuidInfo
             throw new NotImplementedException();
         }
 
-        public void UpdateSystemGuid(Guid guid) { SystemGuid = guid; }
+        public void UpdateSystemGuid(Guid guid) { Guid = guid; }
 
         public void ValidateGuidInfo(Guid targetGuid, IGuidManagerComponent service)
         {
             // NotImplementedException
             throw new NotImplementedException();
             // bool isSystemGuidValid = Guid.TryParse(targetGuid.ToString(), out _);
-            // bool isCachedGuidValid = Guid.TryParse(SystemGuid.ToString(), out _);
+            // bool isCachedGuidValid = Guid.TryParse(Guid.ToString(), out _);
             //
             // // Attempt to repair or unregister any broken registrations
             // switch (isSystemGuidValid)

@@ -7,28 +7,24 @@ namespace Manager
 {
     public interface IGuidManagerComponent
     {
-        // Manager Specific Implementations
-        public Guid SystemGuid {get;}
-        public void Unregister(Guid systemGuid);
-        public Guid GetGuid();
-        public IGuidInfo GetInfo(Guid systemGuid);
+        // Miscellaneous Implementations
+        public Guid Guid {get; set;}
+        public void UnregisterImplementation(Guid guid);
+        public IGuidInfo GetInfoImplementation(Guid guid);
 
         // GuidComponent Implementations
-        public Guid Register(IGuidComponent target);
-        public void Unregister(IGuidComponent target);
-        public Guid GetGuid(IGuidComponent target);
-        public IGuidInfo GetInfo(IGuidComponent target);
+        public Guid RegisterImplementation(IGuidComponent target);
+        public void UnregisterImplementation(IGuidComponent target);
+        public IGuidInfo GetInfoImplementation(IGuidComponent target);
 
         // GuidManagerComponent Implementations
-        public Guid Register(IGuidManagerComponent target);
-        public void Unregister(IGuidManagerComponent target);
-        public Guid GetGuid(IGuidManagerComponent target);
-        public IGuidInfo GetInfo(IGuidManagerComponent target);
+        public Guid RegisterImplementation(IGuidManagerComponent target);
+        public void UnregisterImplementation(IGuidManagerComponent target);
+        public IGuidInfo GetInfoImplementation(IGuidManagerComponent target);
 
         // ManagersSceneAsset Implementations
-        public Guid Register(SceneAsset target);
-        public void Unregister(SceneAsset target);
-        public Guid GetGuid(SceneAsset target);
-        public IGuidInfo GetInfo(SceneAsset target);
+        public Guid RegisterImplementation(SceneAsset target);
+        public void UnregisterImplementation(SceneAsset target);
+        public IGuidInfo GetInfoImplementation(SceneAsset target);
     }
 }

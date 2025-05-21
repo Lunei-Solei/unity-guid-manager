@@ -6,7 +6,7 @@ namespace GuidInfo
 {
     public interface IGuidInfo
     {
-        public Guid SystemGuid {get;}
+        public Guid Guid {get;}
         public GameObject GameObject {get;}
         public MonoBehaviour Component {get;}
 

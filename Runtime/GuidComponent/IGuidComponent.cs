@@ -7,7 +7,7 @@ namespace GuidComponent
         protected const string PackageSettingsAssetPath =
             "Packages/com.luneisolei.guidmanager/Runtime/GuidManagerSettings.asset";
 
-        public Guid SystemGuid {get;}
+        public Guid Guid {get;}
         public Guid GetGuid();
     }
 }

@@ -21,20 +21,20 @@ namespace Manager
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            SystemGuid = Register(this);
+            Guid = Register(this);
         }
 
         // Manager Specific Implementations
-        public Guid SystemGuid {get; private set;}
+        public Guid Guid {get; private set;}
 
-        public void Unregister(Guid systemGuid)
+        public void UnregisterImplementation(Guid guid)
         {
-            _guidToInfoMap.Remove(systemGuid);
+            _guidToInfoMap.Remove(guid);
         }
 
-        public Guid GetGuid()
+        public Guid GetManagerGuidImplementation()
         {
-            if (Guid.TryParse(_serializedGuid.ToString(), out Guid systemGuid)) return systemGuid;
+            if (Guid.TryParse(_serializedGuid.ToString(), out Guid guid)) return guid;
 
             Guid newGuid = Guid.NewGuid();
             _serializedGuid = newGuid.ToByteArray();
@@ -42,36 +42,33 @@ namespace Manager
             return newGuid;
         }
 
-        public IGuidInfo GetInfo(Guid systemGuid)
+        public IGuidInfo GetInfoImplementation(Guid guid)
         {
-            _guidToInfoMap.TryGetValue(systemGuid, out IGuidInfo info);
-            info?.ValidateGuidInfo(systemGuid, this);
+            _guidToInfoMap.TryGetValue(guid, out IGuidInfo info);
+            info?.ValidateGuidInfo(guid, this);
 
             return info;
         }
 
         // GuidComponent Implementations
-        public Guid Register(IGuidComponent target)
+        public Guid RegisterImplementation(IGuidComponent target)
         {
             IGuidInfo targetInfo = new GuidComponentInfo(target);
 
             return GuidManagerUtility.AddToMap(_guidToInfoMap, targetInfo, this);
         }
 
-        public void Unregister(IGuidComponent target)
+        public void UnregisterImplementation(IGuidComponent target)
         {
-            _guidToInfoMap.Remove(target.SystemGuid);
+            _guidToInfoMap.Remove(target.Guid);
         }
 
-        public Guid GetGuid(IGuidComponent target)
-        {
-            return target.SystemGuid;
-        }
+        public Guid GetGuidImplementation(IGuidComponent target) => target.Guid;
 
-        public IGuidInfo GetInfo(IGuidComponent target)
+        public IGuidInfo GetInfoImplementation(IGuidComponent target)
         {
-            _guidToInfoMap.TryGetValue(target.SystemGuid, out IGuidInfo info);
-            info?.ValidateGuidInfo(target.SystemGuid, this);
+            _guidToInfoMap.TryGetValue(target.Guid, out IGuidInfo info);
+            info?.ValidateGuidInfo(target.Guid, this);
 
             return info;
         }
@@ -84,47 +81,37 @@ namespace Manager
             return GuidManagerUtility.AddToMap(_guidToInfoMap, targetInfo, this);
         }
 
-        public void Unregister(IGuidManagerComponent target)
+        public void UnregisterImplementation(IGuidManagerComponent target)
         {
             // NotImplementedException
             throw new NotImplementedException();
         }
 
-        public Guid GetGuid(IGuidManagerComponent target)
-        {
+        public Guid GetGuidImplementation(IGuidManagerComponent target) => throw
             // NotImplementedException
-            throw new NotImplementedException();
-        }
+            new NotImplementedException();
 
-        public IGuidInfo GetInfo(IGuidManagerComponent target)
-        {
+        public IGuidInfo GetInfoImplementation(IGuidManagerComponent target) => throw
             // NotImplementedException
-            throw new NotImplementedException();
-        }
+            new NotImplementedException();
 
         // ManagersSceneAsset Implementations
-        public Guid Register(SceneAsset target)
+        public Guid RegisterImplementation(SceneAsset target) => throw
+            // NotImplementedException
+            new NotImplementedException();
+
+        public void UnregisterImplementation(SceneAsset target)
         {
             // NotImplementedException
             throw new NotImplementedException();
         }
 
-        public void Unregister(SceneAsset target)
-        {
+        public Guid GetGuidImplementation(SceneAsset target) => throw
             // NotImplementedException
-            throw new NotImplementedException();
-        }
+            new NotImplementedException();
 
-        public Guid GetGuid(SceneAsset target)
-        {
+        public IGuidInfo GetInfoImplementation(SceneAsset target) => throw
             // NotImplementedException
-            throw new NotImplementedException();
-        }
-
-        public IGuidInfo GetInfo(SceneAsset target)
-        {
-            // NotImplementedException
-            throw new NotImplementedException();
-        }
+            new NotImplementedException();
     }
 }

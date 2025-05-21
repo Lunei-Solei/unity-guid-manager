@@ -17,7 +17,7 @@ namespace GuidComponent
         [SerializeField]
         internal byte[] serializedGuid;
 
-        public Guid SystemGuid
+        public Guid Guid
         {
             get
             {
@@ -36,10 +36,10 @@ namespace GuidComponent
 
             // TODO: Grab IGuidManagerComponent
 
-            if (SystemGuid == Guid.Empty) SystemGuid = guidService.Register(this);
+            if (Guid == Guid.Empty) Guid = guidService.RegisterImplementation(this);
 
-            serializedGuid = SystemGuid.ToByteArray();
-            IGuidInfo info = guidService.GetInfo(this);
+            serializedGuid = Guid.ToByteArray();
+            IGuidInfo info = guidService.GetInfoImplementation(this);
 
             // if (info != null) info.OnUpdated += OnUpdatedEventHandler;
 
@@ -55,7 +55,7 @@ namespace GuidComponent
             if (GuidManagerUtility.IsAssetOnDisk(gameObject))
             {
                 serializedGuid = null;
-                SystemGuid = Guid.Empty;
+                Guid = Guid.Empty;
             }
             else
 #endif
@@ -70,22 +70,22 @@ namespace GuidComponent
         /// <returns>A deserialized system GUID.</returns>
         public Guid GetGuid()
         {
-            if (SystemGuid == Guid.Empty && serializedGuid is { Length: 16 })
+            if (Guid == Guid.Empty && serializedGuid is { Length: 16 })
             {
-                SystemGuid = new Guid(serializedGuid);
+                Guid = new Guid(serializedGuid);
             }
 
-            return SystemGuid;
+            return Guid;
         }
 
         public void OnDestroy()
         {
-            guidService.Unregister(this);
+            guidService.UnregisterImplementation(this);
         }
 
         // private void OnUpdatedEventHandler(object sender, GuidComponentInfo.OnUpdatedEventArgs eventArgs)
         // {
-        //     SystemGuid = eventArgs.Guid;
+        //     Guid = eventArgs.Guid;
         //     serializedGuid = eventArgs.Guid.ToByteArray();
         // }
 
@@ -96,14 +96,14 @@ namespace GuidComponent
             if (GuidManagerUtility.IsAssetOnDisk(gameObject))
             {
                 serializedGuid = null;
-                SystemGuid = Guid.Empty;
+                Guid = Guid.Empty;
             }
             else
 #endif
             {
-                if (SystemGuid != Guid.Empty)
+                if (Guid != Guid.Empty)
                 {
-                    serializedGuid = SystemGuid.ToByteArray();
+                    serializedGuid = Guid.ToByteArray();
                 }
             }
         }
@@ -113,7 +113,7 @@ namespace GuidComponent
             _isInitialized = false;
             if (serializedGuid is { Length: 16 })
             {
-                SystemGuid = new Guid(serializedGuid);
+                Guid = new Guid(serializedGuid);
             }
         }
     }

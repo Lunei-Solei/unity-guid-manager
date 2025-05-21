@@ -7,28 +7,29 @@ using UnityEngine;
 
 namespace Manager
 {
-    public static class GuidManagerUtility
+    internal static class GuidManagerUtility
     {
-        internal static Guid AddToMap(Dictionary<Guid, IGuidInfo> guidToInfoMap, IGuidInfo targetInfo,
-            MonoBehaviour context)
+        private static readonly Config config = Config.GetOrCreateAsset();
+
+        internal static Guid AddToMap(Dictionary<Guid, IGuidInfo> guidToInfoMap, IGuidInfo targetInfo)
         {
-            GameObject gameObject = context.gameObject;
-            guidToInfoMap.TryGetValue(targetInfo.SystemGuid, out IGuidInfo info);
-            if (info != null) return targetInfo.SystemGuid;
+            guidToInfoMap.TryGetValue(targetInfo.Guid, out IGuidInfo info);
+            if (info != null) return targetInfo.Guid;
 
 #if UNITY_EDITOR
+            GameObject gameObject = targetInfo.GameObject;
             if (IsAssetOnDisk(gameObject)) return Guid.Empty;
 
-            Undo.RecordObject(context, "Registered GUID");
+            Undo.RecordObject(config, "Registered GUID");
 
             bool isPartOfModifiedPrefabInstance = PrefabUtility.IsPartOfPrefabInstance(gameObject);
             if (isPartOfModifiedPrefabInstance) PrefabUtility.RecordPrefabInstancePropertyModifications(gameObject);
 #endif
 
             // GUID is not registered. Assign a new one
-            Guid systemGuid = Guid.NewGuid();
+            Guid guid = Guid.NewGuid();
 
-            return guidToInfoMap.TryAdd(systemGuid, targetInfo) ? systemGuid : Guid.Empty;
+            return guidToInfoMap.TryAdd(guid, targetInfo) ? guid : Guid.Empty;
         }
 
 #if UNITY_EDITOR
@@ -44,10 +45,8 @@ namespace Manager
             return currentStage != mainStage && prefabStage || isPartOfPrefabAsset;
         }
 
-        internal static bool IsAssetOnDisk(GameObject target)
-        {
-            return PrefabUtility.IsPartOfPrefabAsset(target) || IsEditingInPrefabMode(target);
-        }
+        internal static bool IsAssetOnDisk(GameObject target) =>
+            PrefabUtility.IsPartOfPrefabAsset(target) || IsEditingInPrefabMode(target);
 #endif
     }
 }
