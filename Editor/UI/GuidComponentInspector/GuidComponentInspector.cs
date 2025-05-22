@@ -1,5 +1,5 @@
 using System.IO;
-using Manager;
+using Core;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Editor.UI.GuidComponentInspector
 {
-    [CustomEditor(typeof(GuidComponent.GuidComponent))]
+    [CustomEditor(typeof(GuidComponent))]
     public class GuidComponentInspector : UnityEditor.Editor
     {
         [SerializeField]
@@ -18,14 +18,12 @@ namespace Editor.UI.GuidComponentInspector
             set => guidServiceProvider = value;
         }
 
-        private IGuidManagerComponent _guidService;
-
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement root = SetupRoot();
             Label guidField = root.Q<Label>("guidField");
-            GuidComponent.GuidComponent guidComponent = (GuidComponent.GuidComponent)target;
-            guidField.text = guidComponent.GetGuid().ToString();
+            GuidComponent guidComponent = (GuidComponent)target;
+            guidField.text = guidComponent.Guid.ToString();
 
             root.Bind(serializedObject);
 

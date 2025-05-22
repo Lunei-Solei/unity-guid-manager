@@ -1,52 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using GuidInfo;
+using Core;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace Manager
+internal static class GuidManagerUtility
 {
-    internal static class GuidManagerUtility
-    {
-        private static readonly Config config = Config.GetOrCreateAsset();
+    private static readonly Config config = Config.GetConfigAsset();
 
-        internal static Guid AddToMap(Dictionary<Guid, IGuidInfo> guidToInfoMap, IGuidInfo targetInfo)
-        {
-            guidToInfoMap.TryGetValue(targetInfo.Guid, out IGuidInfo info);
-            if (info != null) return targetInfo.Guid;
+    internal static Guid AddToMap<T>(Dictionary<Guid, T> guidToInfoMap, T targetInfo) where T : IGuidInfoBase
+    {
+        guidToInfoMap.TryGetValue(targetInfo.Guid, out T info);
+        if (info != null) return targetInfo.Guid;
 
 #if UNITY_EDITOR
-            GameObject gameObject = targetInfo.GameObject;
+        GameObject gameObject = targetInfo is IHasGameObject hasGameObject ? hasGameObject.GameObject : null;
+        if (gameObject)
+        {
             if (IsAssetOnDisk(gameObject)) return Guid.Empty;
 
             Undo.RecordObject(config, "Registered GUID");
 
             bool isPartOfModifiedPrefabInstance = PrefabUtility.IsPartOfPrefabInstance(gameObject);
             if (isPartOfModifiedPrefabInstance) PrefabUtility.RecordPrefabInstancePropertyModifications(gameObject);
+        }
 #endif
 
-            // GUID is not registered. Assign a new one
-            Guid guid = Guid.NewGuid();
+        // GUID is not registered. Assign a new one
+        Guid guid = Guid.NewGuid();
 
-            return guidToInfoMap.TryAdd(guid, targetInfo) ? guid : Guid.Empty;
-        }
+        return guidToInfoMap.TryAdd(guid, targetInfo) ? guid : Guid.Empty;
+    }
 
 #if UNITY_EDITOR
-        private static bool IsEditingInPrefabMode(GameObject target)
-        {
-            if (EditorUtility.IsPersistent(target)) return true;
+    private static bool IsEditingInPrefabMode(GameObject target)
+    {
+        if (EditorUtility.IsPersistent(target)) return true;
 
-            StageHandle mainStage = StageUtility.GetMainStageHandle();
-            StageHandle currentStage = StageUtility.GetCurrentStageHandle();
-            PrefabStage prefabStage = PrefabStageUtility.GetPrefabStage(target);
-            bool isPartOfPrefabAsset = PrefabUtility.IsPartOfPrefabAsset(target);
+        StageHandle mainStage = StageUtility.GetMainStageHandle();
+        StageHandle currentStage = StageUtility.GetCurrentStageHandle();
+        PrefabStage prefabStage = PrefabStageUtility.GetPrefabStage(target);
+        bool isPartOfPrefabAsset = PrefabUtility.IsPartOfPrefabAsset(target);
 
-            return currentStage != mainStage && prefabStage || isPartOfPrefabAsset;
-        }
-
-        internal static bool IsAssetOnDisk(GameObject target) =>
-            PrefabUtility.IsPartOfPrefabAsset(target) || IsEditingInPrefabMode(target);
-#endif
+        return currentStage != mainStage && prefabStage || isPartOfPrefabAsset;
     }
+
+    internal static bool IsAssetOnDisk(GameObject target) =>
+        PrefabUtility.IsPartOfPrefabAsset(target) || IsEditingInPrefabMode(target);
+#endif
 }
