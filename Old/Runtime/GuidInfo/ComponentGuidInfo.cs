@@ -12,6 +12,6 @@ public class ComponentGuidInfo : IGuidInfoBase, IHasGameObject
     {
         Guid = target.Guid;
         Component = target;
-        GameObject = Component.gameObject;
+        GameObject = target.gameObject;
     }
 }

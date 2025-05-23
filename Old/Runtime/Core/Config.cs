@@ -17,17 +17,25 @@ namespace Core
         private static Config s_configAsset;
 
         [SerializeField]
-        private byte[] serializedGuid;
+        private byte[] serializedManagerGuid;
         public Guid ManagerGuid
         {
             get
             {
-                // TODO: byte[].ToString() returns "System.Byte[]"
-                Guid.TryParse(serializedGuid?.ToString(), out Guid guid);
+                Guid guid;
+                if (serializedManagerGuid is { Length: 16 })
+                {
+                    guid = new Guid(serializedManagerGuid);
+
+                    return guid;
+                }
+
+                guid = Guid.NewGuid();
+                serializedManagerGuid = guid.ToByteArray();
 
                 return guid;
             }
-            internal set => serializedGuid = value.ToByteArray();
+            internal set => serializedManagerGuid = value.ToByteArray();
         }
 
         public static Config GetConfigAsset()

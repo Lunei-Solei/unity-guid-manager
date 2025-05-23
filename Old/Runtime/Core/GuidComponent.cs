@@ -10,6 +10,7 @@ namespace Core
     public class GuidComponent : MonoBehaviour
     {
         private bool _isInitialized;
+        private Guid _cachedGuid;
 
         [SerializeField]
         private byte[] serializedGuid;
@@ -17,17 +18,22 @@ namespace Core
         {
             get
             {
-                if (serializedGuid is { Length: 16 })
-                {
-                    return new Guid(serializedGuid);
-                }
+                // Use cached value, if available
+                if (_cachedGuid != Guid.Empty) return _cachedGuid;
 
-                Guid guid = Guid.NewGuid();
-                serializedGuid = guid.ToByteArray();
+                // Parse from serialized data, if valid
+                if (serializedGuid is { Length: 16 }) return new Guid(serializedGuid);
 
-                return guid;
+                // Generate new GUID, if needed
+                Guid = GuidManager.GenerateUniqueGuid();
+
+                return Guid;
             }
-            private set => serializedGuid = value.ToByteArray();
+            private set
+            {
+                _cachedGuid = value;
+                serializedGuid = value.ToByteArray();
+            }
         }
 
         private void Awake() { Initialize(); }
@@ -35,8 +41,6 @@ namespace Core
         private void Initialize()
         {
             if (_isInitialized) return;
-
-            if (Guid == Guid.Empty) Guid = Guid.NewGuid();
 
             Guid = GuidManager.Register(this);
             _isInitialized = true;
@@ -46,7 +50,7 @@ namespace Core
         {
 #if UNITY_EDITOR
             // Called when copying a component or applying a prefab
-            if (GuidManagerUtility.IsAssetOnDisk(gameObject))
+            if (GuidManagerUtility.IsInPrefabContext(gameObject))
             {
                 serializedGuid = null;
                 Guid = Guid.Empty;

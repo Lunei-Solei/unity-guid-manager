@@ -11,26 +11,40 @@ internal static class GuidManagerUtility
 
     internal static Guid AddToMap<T>(Dictionary<Guid, T> guidToInfoMap, T targetInfo) where T : IGuidInfoBase
     {
-        guidToInfoMap.TryGetValue(targetInfo.Guid, out T info);
-        if (info != null) return targetInfo.Guid;
+        if (targetInfo.Guid != Guid.Empty)
+        {
+            guidToInfoMap.TryGetValue(targetInfo.Guid, out T info);
+            if (info != null) return info.Guid;
+        }
 
 #if UNITY_EDITOR
+        // Make sure the GUID is not for something that is in a prefab context
         GameObject gameObject = targetInfo is IHasGameObject hasGameObject ? hasGameObject.GameObject : null;
+        if (gameObject && IsInPrefabContext(gameObject)) return Guid.Empty;
+#endif
+
+        Guid guid = GenerateUniqueGuid();
+
+#if UNITY_EDITOR
         if (gameObject)
         {
-            if (IsAssetOnDisk(gameObject)) return Guid.Empty;
-
             Undo.RecordObject(config, "Registered GUID");
 
             bool isPartOfModifiedPrefabInstance = PrefabUtility.IsPartOfPrefabInstance(gameObject);
             if (isPartOfModifiedPrefabInstance) PrefabUtility.RecordPrefabInstancePropertyModifications(gameObject);
         }
 #endif
+        guidToInfoMap.TryAdd(guid, targetInfo);
 
-        // GUID is not registered. Assign a new one
+        return guid;
+    }
+
+    internal static Guid GenerateUniqueGuid()
+    {
         Guid guid = Guid.NewGuid();
+        while (GuidManager.GuidToInfoMap.ContainsKey(guid)) guid = Guid.NewGuid();
 
-        return guidToInfoMap.TryAdd(guid, targetInfo) ? guid : Guid.Empty;
+        return guid;
     }
 
 #if UNITY_EDITOR
@@ -46,7 +60,7 @@ internal static class GuidManagerUtility
         return currentStage != mainStage && prefabStage || isPartOfPrefabAsset;
     }
 
-    internal static bool IsAssetOnDisk(GameObject target) =>
+    internal static bool IsInPrefabContext(GameObject target) =>
         PrefabUtility.IsPartOfPrefabAsset(target) || IsEditingInPrefabMode(target);
 #endif
 }

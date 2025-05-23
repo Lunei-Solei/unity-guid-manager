@@ -1,11 +1,10 @@
 using System.IO;
-using Core;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Editor.UI.GuidComponentInspector
+namespace Old.Editor.UI.GuidComponentInspector
 {
     [CustomEditor(typeof(GuidComponent))]
     public class GuidComponentInspector : UnityEditor.Editor

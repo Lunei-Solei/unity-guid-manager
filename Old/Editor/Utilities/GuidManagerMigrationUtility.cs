@@ -1,4 +1,4 @@
-﻿namespace Editor.Utilities
+﻿namespace Old.Editor.Utilities
 {
     public class GuidManagerMigrationUtility
     {
