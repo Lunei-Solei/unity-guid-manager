@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using NUnit.Framework;
+using Tests.Shared;
 using Unity.PerformanceTesting;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -28,9 +29,7 @@ namespace Tests.Editor
 
             using (Measure.Scope("GuidComponent Registration"))
             {
-                GameObject parentObject = new GameObject();
-                guidComponent = parentObject.AddComponent<GuidComponent>();
-                guidComponent = GuidManager.GetGuidComponent(guidComponent.Guid);
+                guidComponent = GuidComponentSharedTests.Registration();
             }
 
             Assert.That(guidComponent, Is.Not.Null);
@@ -41,12 +40,11 @@ namespace Tests.Editor
         [UnityTest, Performance]
         public IEnumerator UnregistrationTest()
         {
-            GuidComponent guidComponent = new GameObject().AddComponent<GuidComponent>();
+            GuidComponent guidComponent;
 
             using (Measure.Scope("GuidComponent Unregistration"))
             {
-                GuidManager.Unregister(guidComponent.Guid);
-                guidComponent = GuidManager.GetGuidComponent(guidComponent.Guid);
+                guidComponent = GuidComponentSharedTests.Unregistration();
             }
 
             Assert.That(guidComponent, Is.Null);
@@ -61,7 +59,7 @@ namespace Tests.Editor
             Guid guid = guidComponent.Guid;
             UnityEngine.Object.DestroyImmediate(guidComponent);
 
-            Assert.That(!GuidManager.GetGuidComponent(guid), Is.True);
+            Assert.That(!GuidManager.GetGuidInfo(guid).GuidComponent, Is.True);
 
             yield return null;
         }
