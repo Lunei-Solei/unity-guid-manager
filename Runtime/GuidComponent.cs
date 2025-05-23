@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class GuidComponent : MonoBehaviour, IGuidInfo
+public class GuidComponent : MonoBehaviour
 {
     private bool _isInitialized;
     private Guid _cachedGuid;
@@ -45,10 +45,10 @@ public class GuidComponent : MonoBehaviour, IGuidInfo
     private void Initialize()
     {
         if (_isInitialized) return;
-
+        
         Guid = GuidManager.Register(this);
         _isInitialized = true;
     }
 
-    void IGuidInfo.UpdateGuid(Guid guid) => Guid = guid;
+    public void SetGuid(Guid guid) => Guid = guid;
 }

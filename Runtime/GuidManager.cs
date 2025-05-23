@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public static class GuidManager
 {
-    private static readonly Dictionary<Guid, IGuidInfo> guidToInfoMap = new Dictionary<Guid, IGuidInfo>();
+    private static readonly Dictionary<Guid, GuidInfo> guidToInfoMap = new Dictionary<Guid, GuidInfo>();
 
     public static Guid GenerateUniqueGuid(Guid guid = default)
     {
@@ -12,19 +12,20 @@ public static class GuidManager
         return guid;
     }
 
-    public static Guid Register(IGuidInfo target)
+    public static Guid Register(GuidComponent target)
     {
+        GuidInfo targetInfo = new GuidInfo(target);
         Guid guid = GenerateUniqueGuid(target.Guid);
-        if (guid != target.Guid) target.UpdateGuid(guid);
+        if (guid != target.Guid) target.SetGuid(guid);
 
-        return guidToInfoMap.TryAdd(guid, target) ? guid : Guid.Empty;
+        return guidToInfoMap.TryAdd(guid, targetInfo) ? guid : Guid.Empty;
     }
 
-    public static GuidComponent GetGuidComponent(Guid guid)
+    public static GuidInfo GetGuidInfo(Guid guid)
     {
-        guidToInfoMap.TryGetValue(guid, out IGuidInfo info);
+        guidToInfoMap.TryGetValue(guid, out GuidInfo info);
 
-        return (GuidComponent)info;
+        return info;
     }
 
     public static void Unregister(Guid guid) => guidToInfoMap.Remove(guid);
