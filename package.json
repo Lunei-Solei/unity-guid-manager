@@ -5,7 +5,7 @@
         "email": "",
         "url": ""
     },
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "A tool to allow the managing of GameObjects via a GuidComponent and GuidManager.",
     "displayName": "GUID Manager",
     "unity": "6000.0",
