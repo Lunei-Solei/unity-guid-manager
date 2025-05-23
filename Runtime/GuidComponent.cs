@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+[ExecuteInEditMode, DisallowMultipleComponent]
 public class GuidComponent : MonoBehaviour
 {
     private bool _isInitialized;
@@ -32,13 +33,16 @@ public class GuidComponent : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        Initialize();
-    }
+    private void Awake() => Initialize();
 
     private void OnValidate()
     {
+        if (!gameObject)
+        {
+            OnDestroy();
+            return;
+        }
+        
         Initialize();
     }
 
@@ -50,5 +54,11 @@ public class GuidComponent : MonoBehaviour
         _isInitialized = true;
     }
 
+    public void OnDestroy()
+    {
+        GuidManager.Unregister(Guid);
+    }
+    
+    
     public void SetGuid(Guid guid) => Guid = guid;
 }
