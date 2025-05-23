@@ -7,7 +7,7 @@ public static class GuidManager
 
     public static Guid GenerateUniqueGuid(Guid guid = default)
     {
-        while (guidToInfoMap.TryGetValue(guid, out _)) guid = Guid.NewGuid();
+        while (guidToInfoMap.TryGetValue(guid, out _) && guid != Guid.Empty) guid = Guid.NewGuid();
 
         return guid;
     }
