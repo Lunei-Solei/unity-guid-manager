@@ -57,4 +57,6 @@ public static class GuidManager
         }
     }
 
+    [MenuItem("Tools/GUID Manager/Clear All GUIDs")]
+    public static void Clear() => guidToInfoMap.Clear();
 }
