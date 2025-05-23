@@ -5,8 +5,8 @@
         "email": "",
         "url": ""
     },
-    "version": "0.0.1",
-    "description": "A tool that allows for the centralized managing of GUIDs for assets and GameObjects in order to provide easy access to references that persist across scenes.",
+    "version": "0.1.0",
+    "description": "A tool that allows for the centralized managing of GUIDs for GameObjects in order to provide easy access to references that persist across scenes.",
     "displayName": "GUID Manager",
     "unity": "6000.0",
     "changelogUrl": null,

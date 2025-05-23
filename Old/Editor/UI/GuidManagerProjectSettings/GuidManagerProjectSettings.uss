@@ -1,6 +1,0 @@
-:root {
-}
-
-.unity-object-field > Label {
-    min-width: 150px;
-}
