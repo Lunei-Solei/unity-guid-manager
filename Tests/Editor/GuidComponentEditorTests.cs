@@ -25,14 +25,14 @@ namespace Tests.Editor
         [UnityTest, Performance]
         public IEnumerator RegistrationTest()
         {
-            GuidComponent guidComponent;
-
-            using (Measure.Scope("GuidComponent Registration"))
-            {
-                guidComponent = GuidComponentSharedTests.Registration();
-            }
-
-            Assert.That(guidComponent, Is.Not.Null);
+            Measure.Method(GuidComponentSharedTests.RegistrationTest)
+                .WarmupCount(10)
+                .MeasurementCount(100)
+                .IterationsPerMeasurement(10)
+                .SampleGroup("GuidComponent Registration")
+                .SetUp(GuidManager.Refresh)
+                .CleanUp(GuidManager.Clear)
+                .Run();
 
             yield return null;
         }
@@ -40,14 +40,14 @@ namespace Tests.Editor
         [UnityTest, Performance]
         public IEnumerator UnregistrationTest()
         {
-            GuidComponent guidComponent;
-
-            using (Measure.Scope("GuidComponent Unregistration"))
-            {
-                guidComponent = GuidComponentSharedTests.Unregistration();
-            }
-
-            Assert.That(guidComponent, Is.Null);
+            Measure.Method(GuidComponentSharedTests.UnregistrationTest)
+                .WarmupCount(10)
+                .MeasurementCount(100)
+                .IterationsPerMeasurement(10)
+                .SampleGroup("GuidComponent Unregistration")
+                .SetUp(GuidManager.Refresh)
+                .CleanUp(GuidManager.Clear)
+                .Run();
 
             yield return null;
         }
@@ -59,9 +59,10 @@ namespace Tests.Editor
             Guid guid = guidComponent.Guid;
             UnityEngine.Object.DestroyImmediate(guidComponent);
 
-            Assert.That(!GuidManager.GetGuidInfo(guid).GuidComponent, Is.True);
-
             yield return null;
+            
+            Assert.That(GuidManager.GetGuidMap().Count, Is.EqualTo(0));
+            Assert.That(GuidManager.GetGuidInfo(guid), Is.Null);
         }
     }
 }

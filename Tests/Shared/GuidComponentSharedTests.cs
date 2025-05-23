@@ -1,23 +1,25 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
+using UnityEngine;
 
 namespace Tests.Shared
 {
     public static class GuidComponentSharedTests
     {
-        public static GuidComponent Registration()
+        public static void RegistrationTest()
         {
-            GameObject parentObject = new GameObject();
-            GuidComponent guidComponent = parentObject.AddComponent<GuidComponent>();
-            
-            return GuidManager.GetGuidInfo(guidComponent.Guid)?.GuidComponent;
+            GuidComponent guidComponent = new GameObject().AddComponent<GuidComponent>();
+            Assert.That(GuidManager.GetGuidMap().Count, Is.EqualTo(1));
         }
 
-        public static GuidComponent Unregistration()
+        public static void UnregistrationTest()
         {
             GuidComponent guidComponent = new GameObject().AddComponent<GuidComponent>();
             GuidManager.Unregister(guidComponent.Guid);
             
-            return GuidManager.GetGuidInfo(guidComponent.Guid)?.GuidComponent;
+            Assert.That(GuidManager.GetGuidMap().Count, Is.EqualTo(0));
         }
     }
 }
