@@ -1,0 +1,21 @@
+﻿{
+    "name": "com.luneisolei.guidmanager",
+    "author": {
+        "name": "Lunei Solei",
+        "email": "",
+        "url": ""
+    },
+    "version": "0.0.1",
+    "description": "A tool to allow the managing of GameObjects via a GuidComponent and GuidManager.",
+    "displayName": "GUID Manager",
+    "unity": "6000.0",
+    "changelogUrl": null,
+    "hideInEditor": true,
+    "keywords": [
+        "guid",
+        "manager"
+    ],
+    "license": "CC-BY-4.0",
+    "licensesUrl": "https://spdx.org/licenses/CC-BY-4.0.html",
+    "samples": null
+}
