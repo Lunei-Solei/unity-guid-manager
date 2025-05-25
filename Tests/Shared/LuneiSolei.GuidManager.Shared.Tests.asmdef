@@ -1,0 +1,16 @@
+{
+    "name": "LuneiSolei.GuidManager.Shared.Tests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f1d3baa2ee939464da9672d02f73732b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

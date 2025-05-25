@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
 public static class GuidManager
 {
-    private static readonly Dictionary<Guid, GuidInfo> guidToInfoMap = new Dictionary<Guid, GuidInfo>();
+    private static readonly Dictionary<Guid, IGuidInfo> guidToInfoMap = new Dictionary<Guid, IGuidInfo>();
     public enum GuidType : ushort
     {
         Component,
@@ -28,33 +29,51 @@ public static class GuidManager
         return guidToInfoMap.TryAdd(guid, targetInfo) ? guid : Guid.Empty;
     }
 
-    public static GuidInfo GetGuidInfo(Guid guid)
+    public static IGuidInfo GetGuidInfo(Guid guid)
     {
-        guidToInfoMap.TryGetValue(guid, out GuidInfo info);
+        guidToInfoMap.TryGetValue(guid, out IGuidInfo info);
 
         return info;
     }
 
     public static void Unregister(Guid guid) => guidToInfoMap.Remove(guid);
-    
-    public static Dictionary<Guid, GuidInfo> GetGuidMap() => guidToInfoMap;
+
+    public static Dictionary<Guid, IGuidInfo> GetGuidMap() => guidToInfoMap;
 
     [MenuItem("Tools/GUID Manager/Refresh All GUIDs")]
-    public static void Refresh()
+    private static async void ShowCleanUpWindow()
     {
-        foreach ((Guid key, GuidInfo value) in guidToInfoMap)
+        try { await CleanUp(); }
+        catch (Exception e) { Debug.LogException(e); }
+    }
+    
+    public static async Task CleanUp()
+    {
+        int totalItems = guidToInfoMap.Count;
+        int i = 0;
+        int progressId = Progress.Start("Refreshing GUIDs");
+        List<Guid> guidsToRemove = new List<Guid>();
+        
+        foreach ((Guid key, IGuidInfo value) in guidToInfoMap)
         {
+            Progress.Report(progressId, i / (float)totalItems, $"Processing {i + 1} / {totalItems}");
+            await Task.Yield();
             switch (value.GuidInfoType)
             {
                 case GuidType.Component:
-                    if (!value.GuidComponent || !value.GameObject) Unregister(key); return;
+                    if (!value.GuidComponent || !value.GameObject) guidsToRemove.Add(key);
                     break;
                 case GuidType.Asset:
                     break;
                 default:
                     break;
             }
+
+            i++;
         }
+        
+        foreach (Guid guid in guidsToRemove) guidToInfoMap.Remove(guid);
+        Progress.Finish(progressId);
     }
 
     [MenuItem("Tools/GUID Manager/Clear All GUIDs")]

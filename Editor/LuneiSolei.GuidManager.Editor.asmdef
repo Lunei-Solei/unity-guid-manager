@@ -1,10 +1,10 @@
 {
-    "name": "LuneiSolei.GuidManager.Tests.Shared",
+    "name": "LuneiSolei.GuidManager.Editor",
     "rootNamespace": "",
-    "references": [
-        "GUID:f1d3baa2ee939464da9672d02f73732b"
+    "references": [],
+    "includePlatforms": [
+        "Editor"
     ],
-    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
