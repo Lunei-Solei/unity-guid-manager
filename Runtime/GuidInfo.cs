@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class GuidInfo
+public class GuidInfo : IGuidInfo
 {
     public GameObject GameObject {get; private set;}
     public GuidComponent GuidComponent {get; private set;}
@@ -12,5 +12,12 @@ public class GuidInfo
         GuidInfoType = GuidManager.GuidType.Component;
         GuidComponent = target;
         GameObject = target.gameObject;
+    }
+
+    public GuidInfo()
+    {
+        GuidInfoType = GuidManager.GuidType.Component;
+        GuidComponent = null;
+        GameObject = null;
     }
 }

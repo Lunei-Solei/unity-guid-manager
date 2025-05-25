@@ -30,7 +30,7 @@ namespace Tests.Editor
                 .MeasurementCount(100)
                 .IterationsPerMeasurement(10)
                 .SampleGroup("GuidComponent Registration")
-                .SetUp(GuidManager.Refresh)
+                .SetUp(GuidManager.Clear)
                 .CleanUp(GuidManager.Clear)
                 .Run();
 
@@ -45,7 +45,7 @@ namespace Tests.Editor
                 .MeasurementCount(100)
                 .IterationsPerMeasurement(10)
                 .SampleGroup("GuidComponent Unregistration")
-                .SetUp(GuidManager.Refresh)
+                .SetUp(GuidManager.Clear)
                 .CleanUp(GuidManager.Clear)
                 .Run();
 
