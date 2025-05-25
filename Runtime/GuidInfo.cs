@@ -13,11 +13,4 @@ public class GuidInfo : IGuidInfo
         GuidComponent = target;
         GameObject = target.gameObject;
     }
-
-    public GuidInfo()
-    {
-        GuidInfoType = GuidManager.GuidType.Component;
-        GuidComponent = null;
-        GameObject = null;
-    }
 }
