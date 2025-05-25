@@ -41,20 +41,10 @@ public static class GuidManager
     public static Dictionary<Guid, IGuidInfo> GetGuidMap() => guidToInfoMap;
 
     [MenuItem("Tools/GUID Manager/Refresh All GUIDs")]
-    public static async void ShowCleanUpWindow()
+    private static async void ShowCleanUpWindow()
     {
-        try
-        {
-            for (int i = 0; i < 1000; i++)
-            {
-                guidToInfoMap.Add(GenerateUniqueGuid(), new GuidInfo());
-            }
-            await CleanUp();
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
+        try { await CleanUp(); }
+        catch (Exception e) { Debug.LogException(e); }
     }
     
     public static async Task CleanUp()
